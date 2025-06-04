@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CleanRental.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,15 @@ namespace CleanRental
                     case "2":
                         Console.WriteLine("Exiting the application. Goodbye!");
                         return;
+                    case "10":
+                        DisplayAllActors();
+                        break;
+                    case "11":
+                        DisplayAllCategories();
+                        break;
+                    case "12":
+                        DisplayAllMoviesByActor();
+                        break;
                     default:
                         Console.WriteLine("Invalid choice, please try again.");
                         break;
@@ -52,11 +62,34 @@ namespace CleanRental
             }
         }
 
+        private void DisplayAllCategories()
+        {
+            var categories = Logic.GetAllCategories();
+            foreach (var category in categories)
+            {
+                Console.WriteLine($"{category.CategoryId} - {category.Name}");
+            }
+        }
+
+        private void DisplayAllMoviesByActor()
+        {
+
+        }
+
+        private void DisplayAllActors()
+        {
+            var actors = Logic.GetAllActors();
+            foreach (var actor in actors)
+            {
+                Console.WriteLine($"{actor.ActorId} - {actor.FirstName} {actor.LastName}");
+            }
+        }
+
         private void DisplayAllMovies()
         {
             var movies = Logic.GetAllMovies();
             foreach (var movie in movies) {
-                Console.WriteLine(movie.Title);
+                Console.WriteLine($"{movie.FilmId} - {movie.Title}");
             }
         }
     }
