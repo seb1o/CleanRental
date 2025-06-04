@@ -34,6 +34,12 @@ namespace CleanRental
             return categories;
         }
 
-
+        internal List<Film> GetMoviesByActorId(int actorId)
+        {
+            var movies = Context.Films
+                .Where(f => f.FilmActors.Any(fa => fa.ActorId == actorId))
+                .ToList();
+            return movies;
+        }
     }
 }

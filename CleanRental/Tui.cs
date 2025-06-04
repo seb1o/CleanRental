@@ -73,7 +73,15 @@ namespace CleanRental
 
         private void DisplayAllMoviesByActor()
         {
-
+            DisplayAllActors();
+            Console.Write("Enter Actor ID to see their movies: ");
+            var choice = Console.ReadLine();
+            var actorId = int.TryParse(choice, out var id) ? id : -1;
+            var movies = Logic.GetMoviesByActorId(actorId);
+            foreach (var movie in movies)
+            {
+                Console.WriteLine($"{movie.FilmId} - {movie.Title}");
+            }
         }
 
         private void DisplayAllActors()
