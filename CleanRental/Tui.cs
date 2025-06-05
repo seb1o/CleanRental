@@ -33,7 +33,7 @@ namespace CleanRental
                 Console.WriteLine("10. Show all actors");
                 Console.WriteLine("11. Show all categories");
                 Console.WriteLine("12. Show all Movies with Actors");
-                Console.WriteLine("2. Exit");
+                Console.WriteLine("13. Exit");
                 Console.Write("Choose an option: ");
 
                 var choice = Console.ReadLine();
@@ -44,8 +44,29 @@ namespace CleanRental
                         DisplayAllMovies();
                         break;
                     case "2":
-                        Console.WriteLine("Exiting the application. Goodbye!");
-                        return;
+                        DisplayAllCommedyMovies();
+                        break;
+                    case "3":
+                        DisplayAllCommedyActors();
+                        break;
+                    case "4":
+                        DisplayStoreNumberByCountry();
+                        break;
+                    case "5":
+                        DisplayMoviesRentalNumber();
+                        break;
+                    case "6":
+                        DisplayActorsOrderedByRentalNumber();
+                        break;
+                    case "7":
+                        DisplayMoviesOrderedByRentalIncome();
+                        break;
+                    case "8":
+                        DisplayMoviesGenre();
+                        break;
+                    case "9":
+                        DisplayAllMoviesByActor();
+                        break;
                     case "10":
                         DisplayAllActors();
                         break;
@@ -53,12 +74,107 @@ namespace CleanRental
                         DisplayAllCategories();
                         break;
                     case "12":
-                        DisplayAllMoviesByActor();
+                        DisplayAllMoviesWithActors();
                         break;
+                    case "13":
+                        Console.WriteLine("Exiting the application. Goodbye!");
+                        return;
                     default:
                         Console.WriteLine("Invalid choice, please try again.");
                         break;
                 }
+            }
+        }
+
+        private void DisplayAllMoviesWithActors()
+        {
+            var movies = Logic.GetAllMovies();
+            var actors = Logic.GetAllActors();
+            
+            foreach (var movie in movies)
+            {
+                Console.WriteLine($"{movie.FilmId} - {movie.Title}");
+                var actorIds = movie.FilmActors.Select(fa => fa.ActorId).ToList();
+                //foreach (var actorId in actorIds)
+                //{
+                //    Console.WriteLine($"  Actor ID: {actorId}");
+                //}
+                var movieActors = actors.Where(a => actorIds.Contains(a.ActorId)).ToList();
+                foreach (var actor in movieActors)
+                {
+                    Console.WriteLine($"  Actor: {actor.FirstName} {actor.LastName} (ID: {actor.ActorId})");
+                }
+            }
+        }
+
+        private void DisplayMoviesGenre()
+        {
+            DisplayAllCategories();
+            Console.Write("Enter genre ID to see their movies: ");
+            var choice = Console.ReadLine();
+            var categoryId = int.TryParse(choice, out var id) ? id : -1;
+            var movies = Logic.GetMoviesByCategoryId(categoryId);
+            foreach (var movie in movies)
+            {
+                Console.WriteLine($"{movie.FilmId} - {movie.Title}");
+            }
+        }
+
+        private void DisplayMoviesOrderedByRentalIncome()
+        {
+            var moviesByRentalIncome = Logic.GetMoviesOrderedByRentalIncome();
+            foreach (var movie in moviesByRentalIncome)
+            {
+                Console.WriteLine($"{movie.Item1.FilmId}, {movie.Item1.Title}, {movie.Item2}");
+            }
+
+        }
+
+
+
+        private void DisplayActorsOrderedByRentalNumber()
+        {
+            var actorsByRentalNumber = Logic.GetActorsOrderedByRentalNumber();
+            foreach (var actor in actorsByRentalNumber)
+            {
+                Console.WriteLine($"{actor.Item1} - {actor.Item2} rentals");
+            }
+        }
+
+        private void DisplayMoviesRentalNumber()
+        {
+            var movieRentals = Logic.GetMoviesRentalNumber();
+            foreach (var movieRental in movieRentals)
+            {
+                Console.WriteLine($"{movieRental.Item1} - {movieRental.Item2} rentals");
+            }
+
+        }
+
+        private void DisplayStoreNumberByCountry()
+        {
+            var countryStores = Logic.GetStoreNumberByCountry();
+            foreach (var countryStore in countryStores)
+            {
+                Console.WriteLine($"{countryStore.country} - {countryStore.storeNumber} stores");
+            }
+        }
+
+        private void DisplayAllCommedyActors()
+        {
+            var actors = Logic.GetAllCommedyActors();
+            foreach (var actor in actors)
+            {
+                Console.WriteLine($"{actor.ActorId} - {actor.FirstName} {actor.LastName}");
+            }
+        }
+
+        private void DisplayAllCommedyMovies()
+        {
+            var movies = Logic.GetAllCommedyMovies();
+            foreach (var movie in movies)
+            {
+                Console.WriteLine($"{movie.FilmId} - {movie.Title}");
             }
         }
 
